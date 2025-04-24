@@ -1,0 +1,142 @@
+
+header {
+  background-color: #a68c7c;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+#logo {
+  height: 50px; 
+  transform: scale(4); 
+  transform-origin: left center; 
+}
+
+.welcome-image {
+  text-align: center;
+}
+
+.welcome-image img {
+  max-width: 100%; /*!!*/
+  width: 100vw;           
+  height: auto;           
+  object-fit: cover;      /* για να γεμίσει χωρίς παραμόρφωση */
+  display: block;
+  
+}
+.image-row {
+  display: flex;
+  justify-content: center;
+  gap: 2em; /* απόσταση 2 ανάμεσα στις εικόνες */
+  margin: 2em 0;
+}
+
+.image-row img {
+  width: 45%; /* περίπου η μισή οθόνη για κάθε εικόνα */
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1em;
+}
+
+nav ul li a {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+
+main {
+  padding: 2em;
+}
+
+
+.contact-form {
+  max-width: 600px;
+  background-color: #a68c7c;
+  margin: 2em auto;
+  padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.search {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 2em;
+  gap: 0.5em;
+}
+
+.search input {
+  padding: 0.5em;
+  width: 300px;
+  font-size: 1em;
+  border: 1px solid #a68c7c;
+  border-radius: 4px;
+}
+
+.search button {
+  padding: 0.5em 1.2em;
+  font-size: 1em;
+  background-color: #a68c7c;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search button:hover {
+  background-color: #a68c7c;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5em;
+}
+
+.product {
+  background: white;
+  padding: 1em;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+  background-color: #a68c7c;
+  color: #ffffff;
+  text-align: center;
+  padding: 1em;
+  margin-top: 2em;
+}
+
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #d9cfc6   ;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+}
+/*
+header {
+  background-color: #a68c7c;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}*/
