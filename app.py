@@ -1,18 +1,20 @@
 from flask import Flask, request, jsonify, send_file
-from pymongo import MongoClient
-import gridfs
+from gridfs import GridFS
 from bson import ObjectId
 from io import BytesIO
-import re
 from flask_pymongo import PyMongo
+from flask_cors import CORS
+
 
 app = Flask(__name__)
-
+CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5000"}})
 # MongoDB setup
-cluster = MongoClient("mongodb+srv://papiroEshop:1234@papiro.o5pgjqg.mongodb.net/?retryWrites=true&w=majority&appName=Papiro")
-db = cluster["Papiro"]
-products_collection = db["Products"]
-fs = gridfs.GridFS(db)
+app.config["MONGO_URI"] = "mongodb+srv://papiroEshop:1234@papiro.o5pgjqg.mongodb.net/Papiro?retryWrites=true&w=majority&appName=Papiro"
+mongo = PyMongo(app)
+
+products_collection = mongo.db.Products
+fs = GridFS(mongo.db)
+
 
 # Helper: Convert ObjectId to string
 def serialize_product(product):
@@ -57,7 +59,8 @@ def search_products():
         query = {}
     else:
         # Case-insensitive regex search
-        query = {"name": {"$regex": re.escape(name_query), "$options": "i"}}
+        query = {"$text": {"$search": name_query}}
+
 
     # Perform the query and sort by price descending
     products = list(products_collection.find(query).sort("price", -1))
@@ -91,7 +94,7 @@ def get_product_image(id):
     if not product:
         return jsonify({"error": "Product not found"}), 404
     image_file = fs.get(product["image"])
-    return send_file(BytesIO(image_file.read()), mimetype="image/jpeg")
+    return send_file(BytesIO(image_file.read()), mimetype=image_file.content_type)
 
 # PATCH /products/<id>/like - Increment like count
 @app.route('/products/<id>/like', methods=['PATCH'])
