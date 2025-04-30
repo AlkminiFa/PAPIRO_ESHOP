@@ -8,39 +8,20 @@ collection = db["Products"]
 fs = gridfs.GridFS(db)
 
 # Upload an image to GridFS
-with open("A4.png", "rb") as image_file:
-    image_id = fs.put(image_file, filename="A4.png")
+
+with open("whiteboard_markers.png", "rb") as image_file:
+    image_id = fs.put(image_file, filename="whiteboard_markers.png")
                       
-post0 = { "name": "Paper A4",
+post22 = { "name": "Whiteboard markers",
         "image": image_id,
-        "description": "Χαρτί μεγέθους Α4",
-        "likes": 0,
-        "price": 3.5
-        }
-with open("alcohol_markers.png", "rb") as image_file:
-    image_id = fs.put(image_file, filename="alcohol_markers.png")
-                      
-post1 = { "name": "Alcohol Markers",
-        "image": image_id,
-        "description": "Μαρκαδόροι ζωγραφικής διπλής όψης",
+        "description": "Μαρκαδόροι για πίνακα",
         "likes": 0,
         "price": 5
         }
-with open("blue_backpack.png", "rb") as image_file:
-    image_id = fs.put(image_file, filename="blue_backpack.png")
-                      
-post2 = { "name": "Blue Backpack",
-        "image": image_id,
-        "description": "Μπλε σακίδιο πλάτης",
-        "likes": 0,
-        "price": 20
-        }
 
 
-
-
-
-collection.insert_one(post0)
+collection.insert_one(post22)
     
 
-collection.create_index({"name" : 1})
+# Create a text index on the "name" field
+#collection.create_index([("name", "text")])

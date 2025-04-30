@@ -1,10 +1,118 @@
-from flask import Flask, render_template
+from flask import Flask, request, jsonify, send_file
+from pymongo import MongoClient
+import gridfs
+from bson import ObjectId
+from io import BytesIO
+import re
+from flask_pymongo import PyMongo
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return render_template("homepage.html")
+# MongoDB setup
+cluster = MongoClient("mongodb+srv://papiroEshop:1234@papiro.o5pgjqg.mongodb.net/?retryWrites=true&w=majority&appName=Papiro")
+db = cluster["Papiro"]
+products_collection = db["Products"]
+fs = gridfs.GridFS(db)
 
-if __name__ == "__main__":
+# Helper: Convert ObjectId to string
+def serialize_product(product):
+    product["_id"] = str(product["_id"])
+    product["image"] = str(product["image"])
+    return product
+
+# POST /products - Create new product with image upload
+@app.route('/products', methods=['POST'])
+def create_product():
+    name = request.form.get("name")
+    description = request.form.get("description")
+    price = request.form.get("price")  # NEW: Get price
+    image_file = request.files.get("image")
+
+    if not all([name, description, price, image_file]):
+        return jsonify({"error": "Missing required fields"}), 400
+
+    try:
+        price = float(price)  # Ensure price is a number
+    except ValueError:
+        return jsonify({"error": "Price must be a number"}), 400
+
+    image_id = fs.put(image_file, filename=image_file.filename)
+    product = {
+        "name": name,
+        "description": description,
+        "price": price,  # NEW: Store price
+        "image": image_id,
+        "like": 0
+    }
+    result = products_collection.insert_one(product)
+    return jsonify({"id": str(result.inserted_id)}), 201
+
+# GET /products/search - Search for products
+@app.route('/products/search', methods=['GET'])
+def search_products():
+    name_query = request.args.get("name", "").strip()
+
+    if name_query == "":
+        # Empty name -> return all products
+        query = {}
+    else:
+        # Case-insensitive regex search
+        query = {"name": {"$regex": re.escape(name_query), "$options": "i"}}
+
+    # Perform the query and sort by price descending
+    products = list(products_collection.find(query).sort("price", -1))
+    
+    # Return serialized products
+    return jsonify([serialize_product(p) for p in products])
+
+# GET /products/<id> - Get a specific product
+@app.route('/products/<id>', methods=['GET'])
+def get_product(id):
+    product = products_collection.find_one({"_id": ObjectId(id)})
+    if not product:
+        return jsonify({"error": "Product not found"}), 404
+    return jsonify(serialize_product(product))
+
+# GET /products/popular-products - Get the top-5 products
+@app.route('/products/popular-products', methods=['GET'])
+def get_popular_products():
+    top_products = list(
+        products_collection.find()
+        .sort("like", -1)        # Sort by likes, descending
+        .limit(5)                # Limit to top 5
+    )
+    return jsonify([serialize_product(p) for p in top_products])
+
+
+# GET /products/<id>/image - Serve product image
+@app.route('/products/<id>/image', methods=['GET'])
+def get_product_image(id):
+    product = products_collection.find_one({"_id": ObjectId(id)})
+    if not product:
+        return jsonify({"error": "Product not found"}), 404
+    image_file = fs.get(product["image"])
+    return send_file(BytesIO(image_file.read()), mimetype="image/jpeg")
+
+# PATCH /products/<id>/like - Increment like count
+@app.route('/products/<id>/like', methods=['PATCH'])
+def like_product(id):
+    result = products_collection.update_one(
+        {"_id": ObjectId(id)},
+        {"$inc": {"like": 1}}
+    )
+    if result.matched_count == 0:
+        return jsonify({"error": "Product not found"}), 404
+    return jsonify({"message": "Like incremented"}), 200
+
+# DELETE /products/<id> - Delete product and image
+@app.route('/products/<id>', methods=['DELETE'])
+def delete_product(id):
+    product = products_collection.find_one({"_id": ObjectId(id)})
+    if not product:
+        return jsonify({"error": "Product not found"}), 404
+    fs.delete(product["image"])
+    products_collection.delete_one({"_id": ObjectId(id)})
+    return jsonify({"message": "Product deleted"}), 200
+
+if __name__ == '__main__':
     app.run(debug=True)
