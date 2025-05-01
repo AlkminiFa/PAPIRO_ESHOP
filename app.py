@@ -27,7 +27,7 @@ def serialize_product(product):
 def create_product():
     name = request.form.get("name")
     description = request.form.get("description")
-    price = request.form.get("price")  # NEW: Get price
+    price = request.form.get("price")  
     image_file = request.files.get("image")
 
     if not all([name, description, price, image_file]):
@@ -42,7 +42,7 @@ def create_product():
     product = {
         "name": name,
         "description": description,
-        "price": price,  # NEW: Store price
+        "price": price,  
         "image": image_id,
         "like": 0
     }
