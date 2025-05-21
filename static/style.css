@@ -1,4 +1,3 @@
-
 header {
   background-color: #a68c7c;
   padding: 1em;
@@ -29,12 +28,17 @@ header {
 .image-row {
   display: flex;
   justify-content: center;
-  gap: 2em; /* απόσταση 2 ανάμεσα στις εικόνες */
+  gap: 2em;
   margin: 2em 0;
 }
 
+.image-row a {
+  display: block;
+  width: 45%;
+}
+
 .image-row img {
-  width: 45%; /* περίπου η μισή οθόνη για κάθε εικόνα */
+  width: 100%;
   height: auto;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -132,11 +136,100 @@ body {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 
 }
-/*
-header {
-  background-color: #a68c7c;
-  padding: 1em;
+
+.slideshow {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 2em;
+  flex-wrap: wrap;
+  padding: 1em;
+}
+
+.slideshow-item {
+  text-align: center;
+  padding: 1em;
+  background: white;
+  color: #a68c7c;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+#results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  justify-content: center;
+  padding: 2em;
+}
+
+#results > div {
+  width: 300px;
+  padding: 2em;
+  background: #fff;
+  color: #a68c7c;
+  border-radius: 20px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+#results img {
+  width: 200px; 
+  height: auto;
+  margin-bottom: 1em;
+}
+
+
+.product-card {
+  position: relative;
+  flex: 0 0 auto;
+  width: 250px; 
+  padding: 1.5em;
+  background-color: white;
+  color: #a68c7c;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.homepage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* μικρότερες κάρτες */
+  gap: 3em 2em; /* 3em vertical, 2em horizontal gap */
+  padding: 2em;
+  width: 100%;
+  box-sizing: border-box;
+  justify-items: center;
+}
+.homepage-grid .product-card {
+  height: 260px;                   /* μικρό αλλά σταθερό ύψος */
+  padding: 1.5em 1em;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* κατανέμει εικόνα και κείμενο σωστά */
   align-items: center;
-}*/
+}
+.homepage-grid .product-card img {
+  width: 170px; 
+  height: 170px;
+  margin-bottom: 1em;
+}
+
+
+.like-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #a68c7c;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.like-icon:hover {
+  transform: scale(1.2);
+  color: red;
+}
+
+.like-icon.liked {
+  color: red;
+}

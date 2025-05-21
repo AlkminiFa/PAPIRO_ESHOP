@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, render_template
 from gridfs import GridFS
 from bson import ObjectId
 from io import BytesIO
@@ -10,10 +10,15 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5000"}})
 # MongoDB setup
 app.config["MONGO_URI"] = "mongodb+srv://papiroEshop:1234@papiro.o5pgjqg.mongodb.net/Papiro?retryWrites=true&w=majority&appName=Papiro"
+
+
 mongo = PyMongo(app)
 
 products_collection = mongo.db.Products
 fs = GridFS(mongo.db)
+
+# Δημιουργεί text index στο πεδίο name (αν δεν υπάρχει ήδη)
+products_collection.create_index([("name", "text")])
 
 
 # Helper: Convert ObjectId to string
@@ -38,7 +43,8 @@ def create_product():
     except ValueError:
         return jsonify({"error": "Price must be a number"}), 400
 
-    image_id = fs.put(image_file, filename=image_file.filename)
+    image_id = fs.put(image_file, filename=image_file.filename, content_type=image_file.content_type)
+
     product = {
         "name": name,
         "description": description,
@@ -116,6 +122,44 @@ def delete_product(id):
     fs.delete(product["image"])
     products_collection.delete_one({"_id": ObjectId(id)})
     return jsonify({"message": "Product deleted"}), 200
+
+
+@app.route('/homepage')
+def homepage():
+    products = list(products_collection.find().sort("like", -1).limit(5))
+    return render_template("homepage.html", products=[serialize_product(p) for p in products])
+
+
+@app.route('/products')
+def products_page():
+    return render_template("products.html")
+
+@app.route('/contact')
+def contact_page():
+    return render_template("contact.html")
+
+# GET /api/products - Return all products as JSON
+@app.route('/api/products', methods=['GET'])
+def get_all_products():
+    products = list(products_collection.find())
+    return jsonify([serialize_product(p) for p in products])
+
+from bson.errors import InvalidId
+
+@app.route('/images/<image_id>', methods=['GET'])
+def get_image_by_id(image_id):
+    try:
+        image_file = fs.get(ObjectId(image_id))
+        # fallback τύπος σε περίπτωση που δεν έχει αποθηκευτεί MIME
+        mimetype = image_file.content_type or "image/png"
+        return send_file(BytesIO(image_file.read()), mimetype=mimetype)
+    except InvalidId:
+        return jsonify({"error": "Invalid ObjectId"}), 400
+    except Exception as e:
+        print(f"❌ Σφάλμα κατά την επιστροφή εικόνας: {e}")
+        return jsonify({"error": str(e)}), 404
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

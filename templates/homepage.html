@@ -4,40 +4,67 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Papiro</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <header>
-    <img src="papiro-logo.png" alt="Papiro logo" id="logo">
+
+    <a href="{{ url_for('homepage') }}"> 
+     <img src="{{ url_for('static', filename='papiro-logo.png') }}" alt="Papiro logo" id="logo">
+    </a>
+
     <nav>
       <ul>
-        <li><a href="homepage.html">Αρχική</a></li>
-        <li><a href="products.html">Προϊόντα</a></li>
-        <li><a href="contact.html">Επικοινωνία</a></li>
+        <li><a href="{{ url_for('homepage') }}">Αρχική</a></li>
+        <li><a href="{{ url_for('products_page') }}">Προϊόντα</a></li>
+        <li><a href="{{ url_for('contact_page') }}">Επικοινωνία</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
     <section class="intro">
-      
+      <!-- Μπορείς να βάλεις κάποιο κείμενο καλωσορίσματος εδώ -->
     </section>
+
     <section class="welcome-image">
-      <img src="welcome.png" alt="welcome">
+      <img src="{{ url_for('static', filename='welcome.png') }}" alt="welcome">
     </section>
 
     <section class="image-row">
-      <img src="image1.jpg" alt="Εικόνα 1,προϊόντα γραφικής ύλης">
-      <img src="image2.jpg" alt="Εικόνα 2,προϊόντα γραφικής ύλης">
-    </section>
-    
-    
+  <a href="{{ url_for('products_page') }}"> 
+    <img src="{{ url_for('static', filename='image1.jpg') }}" alt="Εικόνα 1, προϊόντα γραφικής ύλης">
+  </a>
+  <a href="{{ url_for('products_page') }}"> 
+    <img src="{{ url_for('static', filename='image2.jpg') }}" alt="Εικόνα 2, προϊόντα γραφικής ύλης">
+  </a>
+</section>
 
-   
+
+    
+        <!-- Προτεινόμενα προϊόντα -->
+    <section class="products-preview">
+      <h2>Προτεινόμενα προϊόντα</h2>
+      <div class="homepage-grid">
+
+        {% for product in products %}
+          <div class="product-card">
+            <img src="/images/{{ product.image }}" alt="{{ product.name }}" width="100"
+                 onerror="this.src='/static/fallback.jpg'">
+            <p><strong>{{ product.name }}</strong></p>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+  </main>
+
   <footer>
     <h1>Papiro.</h1>
-      <p>-γιατί κάθε ιδέα ξεκινά από μια κενή σελίδα-</p>
-    <p>Αλκμήνη Φαρμάκη,Ευαγγελία Κρασνίδου,Αναστάσης Αναγνώστου.</p>
+    <p>-γιατί κάθε ιδέα ξεκινά από μια κενή σελίδα-</p>
+    <p>Αλκμήνη Φαρμάκη, Ευαγγελία Κρασνίδου, Αναστάσης Αναγνώστου.</p>
   </footer>
+
+  <script src="{{ url_for('static', filename='homepage.js') }}"></script>
 </body>
 </html>

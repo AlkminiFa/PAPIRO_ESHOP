@@ -3,18 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Επικοινωνία - Papiro</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Papiro</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
   <header>
-    <img src="papiro-logo.png" alt="Papiro logo" id="logo">
+    <a href="{{ url_for('homepage') }}"> 
+     <img src="{{ url_for('static', filename='papiro-logo.png') }}" alt="Papiro logo" id="logo">
+    </a>
     <nav>
       <ul>
-        <li><a href="homepage.html">Αρχική</a></li>
-        <li><a href="products.html">Προϊόντα</a></li>
-        <li><a href="contact.html">Επικοινωνία</a></li>
+        <li><a href="{{ url_for('homepage') }}">Αρχική</a></li>
+        <li><a href="{{ url_for('products_page') }}">Προϊόντα</a></li>
+        <li><a href="{{ url_for('contact_page') }}">Επικοινωνία</a></li>
       </ul>
     </nav>
   </header>
