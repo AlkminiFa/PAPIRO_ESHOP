@@ -18,10 +18,13 @@
         <li><a href="{{ url_for('homepage') }}">Αρχική</a></li>
         <li><a href="{{ url_for('products_page') }}">Προϊόντα</a></li>
         <li><a href="{{ url_for('contact_page') }}">Επικοινωνία</a></li>
+        <li><a href="#" id="cart-link"> Καλάθι (<span id="cart-count">0</span>)</a></li>
+        <!-- Ο σύνδεσμος για το καλάθι με δυναμικό μετρητή προϊόντων -->
       </ul>
     </nav>
   </header>
 
+  <!-- Αναζήτηση προϊόντων -->
   <section class="search">
     <input type="text" id="search-input" placeholder="Αναζήτηση προϊόντος..." />
     <button id="search-button">Αναζήτηση</button>
@@ -32,9 +35,21 @@
     <div id="results"></div>
   </main>
 
+ <!-- Πλευρικό παράθυρο καλαθιού (εμφανίζεται με JavaScript όταν πατηθεί το "Καλάθι") -->
+<div id="cart-sidebar" class="hidden">
+  <div class="cart-header">
+    <h2>Καλάθι</h2>
+    <span id="close-cart" class="close-btn">✖</span>
+  </div>
+  <div id="cart-content">
+    <p>Το καλάθι σας είναι άδειο.</p>
+  </div>
+</div>
+
  
 
   <footer>
+    <h1>Papiro.</h1>
     <p>Αλκμήνη Φαρμάκη, Ευαγγελία Κρασνίδου, Αναστάσης Αναγνώστου.</p>
   </footer>
 

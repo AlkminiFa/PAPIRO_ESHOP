@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile-frontend
+    ports:
+      - "8080:80"
+    networks:
+      - papiro-net
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/papiro
+    depends_on:
+      - mongo
+    networks:
+      - papiro-net
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - papiro-net
+
+volumes:
+  mongo-data:
+
+networks:
+  papiro-net:

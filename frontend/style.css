@@ -1,3 +1,4 @@
+/* header και λογότυπο */
 header {
   background-color: #a68c7c;
   padding: 1em;
@@ -13,15 +14,16 @@ header {
   transform-origin: left center; 
 }
 
+/* Εικόνα καλωσορίσματος και σειρά εικόνων */
 .welcome-image {
   text-align: center;
 }
 
 .welcome-image img {
-  max-width: 100%; /*!!*/
+  max-width: 100%; 
   width: 100vw;           
   height: auto;           
-  object-fit: cover;      /* για να γεμίσει χωρίς παραμόρφωση */
+  object-fit: cover;      
   display: block;
   
 }
@@ -44,7 +46,7 @@ header {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-
+/* Πλοήγηση (navigation) */
 nav ul {
   list-style: none;
   margin: 0;
@@ -62,7 +64,7 @@ main {
   padding: 2em;
 }
 
-
+/* φόρμα επικοινωνίας */
 .contact-form {
   max-width: 600px;
   background-color: #a68c7c;
@@ -75,6 +77,7 @@ main {
   gap: 1em;
 }
 
+/* Αναζήτηση προϊόντων */
 .search {
   display: flex;
   justify-content: flex-end;
@@ -105,6 +108,7 @@ main {
   background-color: #a68c7c;
 }
 
+/* Πλέγματα προϊόντων */
 .products {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -118,6 +122,7 @@ main {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/*  Footer */
 footer {
   background-color: #a68c7c;
   color: #ffffff;
@@ -126,7 +131,7 @@ footer {
   margin-top: 2em;
 }
 
-
+/*  Βασικό styling σελίδας */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -136,7 +141,7 @@ body {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 
 }
-
+/* Κάρτες προϊόντων – Εμφάνιση προϊόντων στη σελίδα products */
 .slideshow {
   display: flex;
   justify-content: center;
@@ -189,23 +194,23 @@ body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   text-align: center;
 }
-
+/* Δημοφιλέστερα προϊόντα στην αρχική */
 .homepage-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* μικρότερες κάρτες */
-  gap: 3em 2em; /* 3em vertical, 2em horizontal gap */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+  gap: 3em 2em; 
   padding: 2em;
   width: 100%;
   box-sizing: border-box;
   justify-items: center;
 }
 .homepage-grid .product-card {
-  height: 260px;                   /* μικρό αλλά σταθερό ύψος */
+  height: 260px;                   
   padding: 1.5em 1em;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* κατανέμει εικόνα και κείμενο σωστά */
+  justify-content: space-between; 
   align-items: center;
 }
 .homepage-grid .product-card img {
@@ -214,7 +219,7 @@ body {
   margin-bottom: 1em;
 }
 
-
+/* Like */
 .like-icon {
   position: absolute;
   top: 10px;
@@ -233,3 +238,69 @@ body {
 .like-icon.liked {
   color: red;
 }
+
+/*  ΚΑΛΑΘΙ  */
+#cart-icon {
+  cursor: pointer;
+  font-size: 1.2em;
+  color: #a68c7c;
+  margin-left: auto;
+}
+
+#cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100vh;
+  background-color: #a68c7c;
+  color: #fff;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+  padding: 1em;
+  z-index: 9999;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+#cart-sidebar.visible {
+  transform: translateX(0); /* Εμφάνιση στην οθόνη από δεξιά */
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5em;
+}
+
+.close-btn {
+  cursor: pointer;
+  font-size: 1.3em;
+}
+
+#cart-content {
+  margin-top: 1em;
+}
+
+#cart-sidebar.visible {
+  transform: translateX(0%);
+  transition: transform 0.3s ease;
+}
+
+/*  Σύνδεσμος "Προσθήκη στο καλάθι" */
+.add-to-cart {
+  color: #a68c7c;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.add-to-cart:hover {
+  color: #875d4c;
+}
+
+

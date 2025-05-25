@@ -9,7 +9,11 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5000"}})
 # MongoDB setup
+import os
 app.config["MONGO_URI"] = "mongodb+srv://papiroEshop:1234@papiro.o5pgjqg.mongodb.net/Papiro?retryWrites=true&w=majority&appName=Papiro"
+
+
+
 
 
 mongo = PyMongo(app)
@@ -17,7 +21,7 @@ mongo = PyMongo(app)
 products_collection = mongo.db.Products
 fs = GridFS(mongo.db)
 
-# Δημιουργεί text index στο πεδίο name (αν δεν υπάρχει ήδη)
+# Δημιουργεί text index στο πεδίο name 
 products_collection.create_index([("name", "text")])
 
 
@@ -159,7 +163,10 @@ def get_image_by_id(image_id):
         print(f"❌ Σφάλμα κατά την επιστροφή εικόνας: {e}")
         return jsonify({"error": str(e)}), 404
 
+@app.route("/cart")
+def cart_page():
+    return render_template("cart.html")
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

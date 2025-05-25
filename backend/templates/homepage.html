@@ -13,6 +13,7 @@
      <img src="{{ url_for('static', filename='papiro-logo.png') }}" alt="Papiro logo" id="logo">
     </a>
 
+    
     <nav>
       <ul>
         <li><a href="{{ url_for('homepage') }}">Αρχική</a></li>
@@ -23,10 +24,7 @@
   </header>
 
   <main>
-    <section class="intro">
-      <!-- Μπορείς να βάλεις κάποιο κείμενο καλωσορίσματος εδώ -->
-    </section>
-
+     <!-- Εικόνα καλωσορίσματος -->
     <section class="welcome-image">
       <img src="{{ url_for('static', filename='welcome.png') }}" alt="welcome">
     </section>
@@ -42,11 +40,10 @@
 
 
     
-        <!-- Προτεινόμενα προϊόντα -->
+    <!--Προτεινόμενα προϊόντα */ --> 
     <section class="products-preview">
       <h2>Προτεινόμενα προϊόντα</h2>
       <div class="homepage-grid">
-
         {% for product in products %}
           <div class="product-card">
             <img src="/images/{{ product.image }}" alt="{{ product.name }}" width="100"
@@ -59,12 +56,13 @@
 
   </main>
 
+
   <footer>
     <h1>Papiro.</h1>
     <p>-γιατί κάθε ιδέα ξεκινά από μια κενή σελίδα-</p>
     <p>Αλκμήνη Φαρμάκη, Ευαγγελία Κρασνίδου, Αναστάσης Αναγνώστου.</p>
   </footer>
 
-  <script src="{{ url_for('static', filename='homepage.js') }}"></script>
+
 </body>
 </html>
