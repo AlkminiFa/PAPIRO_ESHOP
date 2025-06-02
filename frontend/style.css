@@ -304,3 +304,146 @@ body {
 }
 
 
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  margin: 2em auto;
+  max-width: 90vw;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 2em;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1em 0;
+}
+
+.carousel-item {
+  flex: 0 0 auto;
+  width: 250px;
+  background: white;
+  color: #a68c7c;
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  padding: 1.5em;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1em;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #a68c7c;
+  color: white;
+  border: none;
+  font-size: 2em;
+  cursor: pointer;
+  padding: 0.2em 0.5em;
+  border-radius: 50%;
+  z-index: 10;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-btn:hover {
+  background-color: #875d4c;
+}
+
+.carousel-btn.left {
+  left: -10px;
+}
+
+.carousel-btn.right {
+  right: -10px;
+}
+.slideshow-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 350px;
+  margin: 2em auto;
+  overflow: hidden;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.slideshow-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.slide-item {
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  text-align: center;
+  background: white;
+  color: #a68c7c;
+  padding: 2em 1em;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.slide-item img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1em;
+}
+
+.slide-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #a68c7c;
+  color: white;
+  border: none;
+  font-size: 2em;
+  padding: 0.2em 0.5em;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.slide-btn.left {
+  left: 10px;
+}
+
+.slide-btn.right {
+  right: 10px;
+}
+
+.slide-btn:hover {
+  background-color: #875d4c;
+}
+
+.slide-dots {
+  text-align: center;
+  margin-top: 1em;
+}
+
+.dot {
+  height: 12px;
+  width: 12px;
+  margin: 0 4px;
+  background-color: #a68c7c;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+.dot.active {
+  opacity: 1;
+  background-color: #875d4c;
+}

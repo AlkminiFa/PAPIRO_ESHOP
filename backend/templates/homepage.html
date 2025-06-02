@@ -40,19 +40,31 @@
 
 
     
-    <!--Προτεινόμενα προϊόντα */ --> 
-    <section class="products-preview">
-      <h2>Προτεινόμενα προϊόντα</h2>
-      <div class="homepage-grid">
-        {% for product in products %}
-          <div class="product-card">
-            <img src="/images/{{ product.image }}" alt="{{ product.name }}" width="100"
-                 onerror="this.src='/static/fallback.jpg'">
-            <p><strong>{{ product.name }}</strong></p>
-          </div>
-        {% endfor %}
-      </div>
-    </section>
+  <section class="products-preview">
+  <h2>Προτεινόμενα προϊόντα</h2>
+  <div class="slideshow-wrapper">
+    <button class="slide-btn left" onclick="moveSlide(-1)">&#10094;</button>
+    <div class="slideshow-track" id="slideshow-track">
+      {% for product in products[:5] %}
+        <div class="slide-item">
+          <img src="/images/{{ product.image }}" alt="{{ product.name }}" onerror="this.src='/static/fallback.jpg'">
+          <p><strong>{{ product.name }}</strong></p>
+        </div>
+      {% endfor %}
+    </div>
+    <button class="slide-btn right" onclick="moveSlide(1)">&#10095;</button>
+  </div>
+
+ <div class="slide-dots" id="slide-dots">
+  {% for product in products[:5] %}
+    <span class="dot" onclick="goToSlide({{ loop.index0 }})"></span>
+  {% endfor %}
+</div>
+
+
+</section>
+
+
 
   </main>
 
@@ -63,6 +75,9 @@
     <p>Αλκμήνη Φαρμάκη, Ευαγγελία Κρασνίδου, Αναστάσης Αναγνώστου.</p>
   </footer>
 
+
+  <script src="{{ url_for('static', filename='products.js') }}"></script>
+  
 
 </body>
 </html>

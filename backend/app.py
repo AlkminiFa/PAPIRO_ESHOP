@@ -69,7 +69,7 @@ def search_products():
         query = {}
     else:
         # Case-insensitive regex search
-        query = {"$text": {"$search": name_query}}
+        query = {"name": {"$regex": name_query, "$options": "i"}}
 
 
     # Perform the query and sort by price descending

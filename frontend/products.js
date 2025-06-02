@@ -2,7 +2,10 @@
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
   const count = cart.reduce((total, item) => total + (item.quantity || 1), 0);
-  document.getElementById("cart-count").textContent = count;
+  const cartCountElement = document.getElementById("cart-count");
+  if (cartCountElement) {
+    cartCountElement.textContent = count;
+  }
 }
 
 // Προσθήκη προϊόντος στο καλάθι
@@ -17,13 +20,13 @@ function setupCartButtons() {
       const existing = cart.find(item => item.id === id);
 
       if (existing) {
-        existing.quantity += 1; // Αν υπάρχει ήδη, αύξησε την ποσότητα
+        existing.quantity += 1;
       } else {
-        cart.push({ id, name, price, quantity: 1 }); // Αλλιώς, νέο προϊόν
+        cart.push({ id, name, price, quantity: 1 });
       }
 
-      localStorage.setItem("cart", JSON.stringify(cart));  // Αποθήκευση
-      updateCartCount(); // Ενημέρωση header
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
       alert(`Το προϊόν "${name}" προστέθηκε στο καλάθι.`);
     });
   });
@@ -56,8 +59,8 @@ function renderProducts(data) {
     results.appendChild(div);
   });
 
-  setupLikeButtons(); // Ενεργοποίηση like
-  setupCartButtons(); // Ενεργοποίηση καλάθι
+  setupLikeButtons();
+  setupCartButtons();
 }
 
 // Like λογική
@@ -86,13 +89,16 @@ function setupLikeButtons() {
 }
 
 // Αναζήτηση προϊόντος
-document.getElementById("search-button").addEventListener("click", () => {
-  const query = document.getElementById("search-input").value;
+const searchButton = document.getElementById("search-button");
+if (searchButton) {
+  searchButton.addEventListener("click", () => {
+    const query = document.getElementById("search-input").value;
 
-  fetch(`/products/search?name=${encodeURIComponent(query)}`)
-    .then(res => res.json())
-    .then(renderProducts);
-});
+    fetch(`/products/search?name=${encodeURIComponent(query)}`)
+      .then(res => res.json())
+      .then(renderProducts);
+  });
+}
 
 // Slideshow για την αρχική
 function setupSlideshow() {
@@ -170,21 +176,54 @@ function setupRemoveButtons() {
 
       const item = cart.find(item => item.id === id);
       if (item.quantity > 1) {
-           item.quantity -= 1;
-  } else {
-  cart = cart.filter(item => item.id !== id);
-}
+        item.quantity -= 1;
+      } else {
+        cart = cart.filter(item => item.id !== id);
+      }
 
       localStorage.setItem("cart", JSON.stringify(cart));
-
       updateCartCount();
       displayCartItems(document.getElementById("cart-content"));
     });
   });
 }
 
+// Slideshow λογική (βελάκια & τελείες)
+let currentSlide = 0;
 
-// Τελική εκκίνηση μόλις φορτωθεί η σελίδα
+function moveSlide(direction) {
+  const track = document.getElementById("slideshow-track");
+  const totalSlides = track.children.length;
+
+  currentSlide += direction;
+
+  if (currentSlide < 0) {
+    currentSlide = totalSlides - 1; // Πήγαινε στην τελευταία αν πας πίσω από την πρώτη
+  } else if (currentSlide >= totalSlides) {
+    currentSlide = 0; // Γύρνα στην αρχή όταν τελειώσουν οι διαφάνειες
+  }
+
+  track.style.transform = `translateX(-${currentSlide * 100}%)`;
+  updateDots();
+}
+
+
+function goToSlide(index) {
+  currentSlide = index;
+  const track = document.getElementById("slideshow-track");
+  if (track) {
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+  }
+  updateDots();
+}
+
+function updateDots() {
+  const dots = document.querySelectorAll("#slide-dots .dot");
+  dots.forEach((dot, index) => {
+    dot.classList.toggle("active", index === currentSlide);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("results")) {
     loadAllProducts();
@@ -193,5 +232,32 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCartCount();
   setupCartSidebar();
   setupSlideshow();
+  updateDots();
+  startAutoplay(); // Αυτόματη εναλλαγή slide
+
+  const track = document.getElementById("slideshow-track");
+  if (track) {
+    track.addEventListener("mouseenter", stopAutoplay);
+    track.addEventListener("mouseleave", startAutoplay);
+  }
 });
 
+
+
+let autoplayInterval;
+
+function startAutoplay() {
+  autoplayInterval = setInterval(() => {
+    moveSlide(1);
+  }, 4000); // αλλαγή κάθε 4 δευτερόλεπτα
+}
+
+function stopAutoplay() {
+  clearInterval(autoplayInterval);
+}
+
+const track = document.getElementById("slideshow-track");
+if (track) {
+  track.addEventListener("mouseenter", stopAutoplay);
+  track.addEventListener("mouseleave", startAutoplay);
+}
